@@ -74,3 +74,16 @@ dotnet ef migrations add InitialCreate
 
 # 2. Execute that code to generate the actual banking.db file
 dotnet ef database update
+
+
+# 1. Clear out any half-baked migration files if they exist
+dotnet ef migrations remove
+
+# 2. Try creating the blueprint again
+dotnet ef migrations add InitialCreate
+
+# 3. Apply it to create the database file
+dotnet ef database update
+
+
+Using asynchronous operations allows the backend to handle thousands of concurrent requests smoothly.

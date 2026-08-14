@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule, FormGroup, Validators, FormBuilder} from '@angular/forms';
 
 @Component({
@@ -45,6 +45,20 @@ export class App implements OnInit {
     if (this.transferForm.invalid) return;
 
     console.log(this.transferForm.value);
+
+    this.http.post(
+      'http://localhost:5255/api/transfer', this.transferForm.value,
+
+    ).subscribe(
+      {
+        next:(value)=>{
+          console.log("SUCCSS",value);
+        },
+        error:(error)=>{
+          console.log("ERROR", error);
+        }
+      }
+    )
   }
   loadHistory() {
     this.http

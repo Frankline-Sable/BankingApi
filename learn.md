@@ -63,3 +63,14 @@ dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 
 ### install the design tools need to create db migrations
 dotnet add package Microsoft.EntityFrameworkCore.Design
+
+
+### create and apply the db migration
+dotnet tool install --global dotnet-ef
+
+
+# 1. Create the blueprint code for your tables
+dotnet ef migrations add InitialCreate
+
+# 2. Execute that code to generate the actual banking.db file
+dotnet ef database update

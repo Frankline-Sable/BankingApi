@@ -1,5 +1,11 @@
+using BankingApi.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Db config line
+builder.Services.AddDbContext<BankDbContext>(options => options.UseSqlite("Data source=bank.db"));
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
@@ -49,8 +55,6 @@ app.MapGet("/weatherforecast", () =>
         return forecast;
     })
     .WithName("GetWeatherForecast");
-
-
 
 
 app.Run();

@@ -2,80 +2,79 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule, FormGroup, Validators, FormBuilder} from '@angular/forms';
-import {v4 as uuid} from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  templateUrl: "./app.html",
+  styleUrl: "./app.css"
+
+
 })
 export class App implements OnInit {
   transferForm!: FormGroup;
+  transactions: Transaction[] = [];
+  apiUrl = "http://localhost:5255/api/transfer";
 
-
-  constructor(private fb: FormBuilder,
-              private http: HttpClient,) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
   }
 
   ngOnInit(): void {
     this.transferForm = this.fb.group({
       accountTo: ['', [
-        Validators.required,
-        Validators.minLength(5)
+        Validators.required, Validators.minLength(5)
       ]],
-      amount: ['', [
-        Validators.required,
-        Validators.minLength(1)
-      ]]
+      amount: [0, [
+        Validators.required, Validators.minLength(1)
+      ]],
     });
     this.loadHistory();
   }
 
-
-  showForm() {
-    console.log(this.transferForm.value);
-    console.log(this.transferForm.valid);
+  loadHistory() {
+    this.http.get<Transaction[]>(this.apiUrl).subscribe({
+      next: (data) =>{
+        this.transactions = data;
+        console.log('Transactions loaded', this.transactions.length);
+      },
+      error: (err) => console.log("Could not load transactions.", err)
+    })
   }
 
-  protected submitTransfer() {
+  submitTransfer() {
     if (this.transferForm.invalid) return;
 
-    console.log(this.transferForm.value);
+    // Generate unique header
+    const headers = {'X-Idempotency-Key': uuidv4()};
 
-    const headers ={
-      "x-Idempotency-Key":uuid()
-    }
-
-    this.http.post(
-      'http://localhost:5255/api/transfer', this.transferForm.value,
-      {headers}
-
-    ).subscribe(
-      {
-        next:(value)=>{
-          console.log("SUCCSS",value);
-        },
-        error:(error)=>{
-          console.log("ERROR", error);
-        }
+    this.http.post(this.apiUrl, this.transferForm.value, {headers}).subscribe({
+      next: (data) => {
+        console.log("sent data", data);
+        this.transferForm.reset({amount: 0});
+      },
+      error: (err) => {
+        console.log("Could not load transfers.", err);
+        alert(err.error || 'Server error Occurred');
       }
-    )
+    })
   }
-  loadHistory() {
-    this.http
-      .get<any[]>('http://localhost:5255/api/transfer/history')
-      .subscribe({
-        next: (data) => {
-          console.log('History:', data);
-        },
-        error: (err) => {
-          console.error('Could not load history:', err);
-        }
-      });
+
+}
+
+export class Transaction {
+  id: number;
+  account: string;
+  amount: number;
+
+
+  constructor(id: number, account: string, amount: number) {
+    this.id = id;
+    this.account = account;
+    this.amount = amount;
   }
 }

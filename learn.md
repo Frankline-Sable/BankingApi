@@ -50,5 +50,16 @@ ng serve --open
 
 
 
+##IDEMPOTENCY
+Repeating the same operation should produce the same final outcome without performing the operation multiple times.
 
 
+### Persisting Data to local db
+Etity framerwork Core
+
+
+### install the EF Core Database provider
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+
+### install the design tools need to create db migrations
+dotnet add package Microsoft.EntityFrameworkCore.Design

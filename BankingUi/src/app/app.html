@@ -1,34 +1,32 @@
-<h1>Fund Transfer</h1>
+<div
+  style="padding: 20px;font-family:sans-serif">
 
-<form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
+  <h2>Fund Transfer</h2>
 
-  <input
-    type="text"
-    formControlName="accountTo"
-    placeholder="Account Number"
-  >
+  <form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
+    <input type="text" placeholder="Account Number" formControlName="accountTo"/>
+    <input type="number" placeholder="Amount" formControlName="amount"/>
+    <button type="submit" [disabled]="transferForm.invalid">Send Money</button>
+  </form>
 
-  <br><br>
+  <h2>Transaction History</h2>
+  <table border="1" style="width:100%;text-align: left;margin-top:20px">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Account</th>
+      <th>Amount</th>
+      <th>Amount</th>
+      <th>Time</th>
+    </tr>
+    </thead>
+    <tbody>
 
-  <input
-    type="number"
-    formControlName="amount"
-    placeholder="Amount"
-  >
-
-  <br><br>
-
-  <button type="submit" [disabled]="transferForm.invalid">
-    Send Money
-  </button>
-
-<!--  <button (click)="showForm()" [disabled]="transferForm.invalid">-->
-<!--    showForm-->
-<!--  </button>-->
-
-  <br>
-  <p>Can proceed {{transferForm.valid}}</p>
-
-  <button (click)="loadHistory()">LoadHistory</button>
-
-</form>
+      @for (tx of transactions; track tx.id) {
+        <tr>
+          <td>{{ tx.id }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

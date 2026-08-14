@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule, FormGroup, Validators, FormBuilder} from '@angular/forms';
+import {v4 as uuid} from 'uuid';
 
 @Component({
   selector: 'app-root',
@@ -46,8 +47,13 @@ export class App implements OnInit {
 
     console.log(this.transferForm.value);
 
+    const headers ={
+      "x-Idempotency-Key":uuid()
+    }
+
     this.http.post(
       'http://localhost:5255/api/transfer', this.transferForm.value,
+      {headers}
 
     ).subscribe(
       {

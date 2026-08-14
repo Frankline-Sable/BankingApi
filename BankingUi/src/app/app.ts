@@ -1,18 +1,37 @@
-import { Component, signal,  } from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {BrowserModule} from '@angular/platform-browser';
+import { Component, OnInit  } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule, FormGroup, Validators, FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
+  standalone:true,
   imports: [
-    HttpClientModule,
+   CommonModule,
     ReactiveFormsModule,
-    BrowserModule
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('BankingUi');
+export class App implements OnInit{
+  transferForm!: FormGroup;
+
+
+  constructor(private fb:FormBuilder) {
+  }
+
+  ngOnInit(): void {
+      this.transferForm = this.fb.group({
+        accountTo:['', [
+          Validators.required,
+          Validators.minLength(5)
+        ]],
+        amount:['', [
+          Validators.required,
+          Validators.minLength(1)
+        ]]
+      })
+  }
+
+
 }

@@ -18,8 +18,11 @@
 
   <br><br>
 
-  <button type="submit">
+  <button type="submit" (click)="showForm()" [disabled]="transferForm.invalid">
     Send Money
   </button>
+
+  <br>
+  <p>Can proceed {{transferForm.valid}}</p>
 
 </form>

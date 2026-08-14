@@ -34,4 +34,8 @@ export class App implements OnInit{
   }
 
 
+  showForm(){
+    console.log(this.transferForm.value);
+    console.log(this.transferForm.valid);
+  }
 }

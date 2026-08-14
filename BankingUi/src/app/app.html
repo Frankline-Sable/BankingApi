@@ -1,6 +1,6 @@
 <h1>Fund Transfer</h1>
 
-<form [formGroup]="transferForm">
+<form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
 
   <input
     type="text"
@@ -18,11 +18,17 @@
 
   <br><br>
 
-  <button type="submit" (click)="showForm()" [disabled]="transferForm.invalid">
+  <button type="submit" [disabled]="transferForm.invalid">
     Send Money
   </button>
 
+<!--  <button (click)="showForm()" [disabled]="transferForm.invalid">-->
+<!--    showForm-->
+<!--  </button>-->
+
   <br>
   <p>Can proceed {{transferForm.valid}}</p>
+
+  <button (click)="loadHistory()">LoadHistory</button>
 
 </form>

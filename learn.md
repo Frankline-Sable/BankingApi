@@ -45,6 +45,9 @@ ng new BankingUi --routing=false --ssr=false
 npm install uuid
 npm install --save-dev @types/uuid
 
+### start frontend server
+ng serve --open
+
 
 
 

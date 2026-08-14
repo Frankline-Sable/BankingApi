@@ -37,7 +37,7 @@ export class App implements OnInit {
   }
 
   loadHistory() {
-    this.http.get<Transaction[]>(this.apiUrl).subscribe({
+    this.http.get<Transaction[]>(this.apiUrl+"/history").subscribe({
       next: (data) =>{
         this.transactions = data;
         console.log('Transactions loaded', this.transactions.length);
@@ -52,10 +52,11 @@ export class App implements OnInit {
     // Generate unique header
     const headers = {'X-Idempotency-Key': uuidv4()};
 
-    this.http.post(this.apiUrl, this.transferForm.value, {headers}).subscribe({
+    this.http.post(this.apiUrl+"/execute", this.transferForm.value, {headers}).subscribe({
       next: (data) => {
         console.log("sent data", data);
         this.transferForm.reset({amount: 0});
+        this.loadHistory();
       },
       error: (err) => {
         console.log("Could not load transfers.", err);

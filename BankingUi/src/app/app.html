@@ -16,15 +16,14 @@
       <th>ID</th>
       <th>Account</th>
       <th>Amount</th>
-      <th>Amount</th>
-      <th>Time</th>
     </tr>
     </thead>
     <tbody>
-
       @for (tx of transactions; track tx.id) {
         <tr>
           <td>{{ tx.id }}</td>
+          <td>{{ tx.account }}</td>
+          <td>{{ tx.amount }}</td>
         </tr>
       }
     </tbody>
